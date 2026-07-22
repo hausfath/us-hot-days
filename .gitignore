@@ -1,0 +1,13 @@
+# Pre-publication draft and third-party image
+blog_post_draft.md
+Martz figure.jpeg
+
+# Large re-downloadable NOAA metadata (see scripts/download_ghcn.sh)
+data/ghcn/ghcnd-inventory.txt
+data/ghcn/ghcnd-stations.txt
+
+# Raw station and gridded source files (deleted after processing; re-downloadable)
+data/ghcn/stations/
+data/berkeley/Complete_TMAX_Daily_LatLong1_*.nc
+
+.DS_Store
