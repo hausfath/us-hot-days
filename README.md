@@ -4,6 +4,12 @@ Code and data behind the Climate Brink post **"Hot days and cold biases"**,
 which evaluates a viral chart of US days at or above 95°F/100°F/105°F built
 from raw GHCN-Daily station data.
 
+**Interactive demo:** [Two ways to erase a hot day](https://hausfath.github.io/us-hot-days/)
+replays the historical observation-time (TOBs) and MMTS instrument transitions
+on pristine USCRN hourly data, showing how paperwork alone can flip a warming
+hot-days record (+1.13 days/decade) into an apparently cooling one
+(−0.84 days/decade).
+
 ## Key results (days ≥95°F per year)
 
 | Series | 1930s | 2000–2023 | ratio |
