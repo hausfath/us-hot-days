@@ -39,6 +39,9 @@ p{ max-width:none; }
 .card{ background:var(--card); border:1px solid var(--border); border-radius:4px;
   padding:1.1rem 1.2rem 1.3rem; margin:1.6rem 0; }
 .card h2{ font-size:1.18rem; margin:.1rem 0 .15rem; }
+h2.prob{ font-size:1.35rem; margin:2.2rem 0 .4rem; }
+h2.prob .no{ color:var(--heat); }
+#mmts-fig{ max-width:480px; margin:.9rem 0; }
 .card .sub{ font-family:var(--sans); font-size:.8rem; color:var(--muted); margin:0 0 .8rem; }
 .controls{ display:flex; flex-wrap:wrap; gap:.9rem 1.4rem; align-items:center;
   font-family:var(--sans); font-size:.82rem; margin:.6rem 0 .8rem; }
@@ -90,6 +93,30 @@ makes it the perfect laboratory: we can take its clean hourly record for
 2005&ndash;2025 and <em>replay</em> those historical changes on top of it, to
 see exactly what they do to a count of days at or above 95&deg;F.</p>
 
+<h2 class="prob"><span class="no">Problem one:</span> when the thermometer is read</h2>
+
+<p>For most of the 20th century, America's daily temperature record was kept
+by volunteers in NOAA's Cooperative Observer Program, using a pair of special
+thermometers: one holds the <em>highest</em> temperature reached since it was
+last reset, the other the lowest. Once a day the observer writes both numbers
+in a ledger and resets the instruments. Everything hinges on when that reset
+happens. Reset near the hottest moment of the day, and the thermometer walks
+into tomorrow's measurement window already remembering this afternoon's heat:
+if tomorrow turns out cooler, the same hot afternoon gets written down twice.
+Reset in the morning, near the day's low point, and each afternoon lands in
+exactly one entry.</p>
+
+<p>This is the time-of-observation bias, and it matters historically because
+the network moved. In the 1930s roughly 80% of volunteer stations reset in
+the late afternoon; by the 2000s most had switched to morning readings,
+largely at the request of the weather services
+(<a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2003GL018111">Vose
+et al 2003</a>). Every switch was in the same direction, afternoon to morning,
+so the double-counting habit drained out of the network over decades: a slow,
+one-way cooling artifact in hot-day counts made purely of paperwork. The chart
+below shows the mechanism in real hourly data; drag the reset time and watch
+the ledger change.</p>
+
 <div class="card">
   <h2>One heat wave, two ledgers</h2>
   <p class="sub">USCRN station Manhattan 6 SSW, Kansas &middot; July 3&ndash;5, 2023 &middot; hourly maximum air temperature</p>
@@ -106,12 +133,35 @@ see exactly what they do to a count of days at or above 95&deg;F.</p>
   would show <b>30</b>. A 7&#8202;AM observer's: <b>26</b>.</p>
 </div>
 
-<p>Multiply that mechanism by every station and every summer, and observation
-time alone changes the national bookkeeping by several percent. Now add the
-second historical change: in the mid-1980s the volunteer network swapped its
-liquid-in-glass thermometers for electronic MMTS sensors, which read daily
-highs about 0.5&deg;C cooler. The panel below replays both transitions on the
-whole USCRN network at once.</p>
+<h2 class="prob"><span class="no">Problem two:</span> the thermometer itself</h2>
+
+<p>The second change was hardware. Until the mid-1980s the standard equipment
+was liquid-in-glass thermometers housed in a white wooden louvered box, the
+Cotton Region Shelter. Beginning in 1985, NOAA replaced them at thousands of
+stations with the electronic Maximum&ndash;Minimum Temperature System (MMTS):
+a thermistor in a small plastic radiation shield, read from a digital display
+indoors. Side-by-side comparisons
+(<a href="https://journals.ametsoc.org/view/journals/bams/72/11/1520-0477_1991_072_1718_eortci_2_0_co_2.xml">Quayle
+et al 1991</a>;
+<a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2006GL027069">Hubbard
+and Lin 2006</a>) found the new shields read daily highs around
+0.4&ndash;0.5&deg;C cooler, mostly because the old wooden boxes heated up in
+strong sunshine and passed some of that warmth to the thermometer inside. The
+new sensor wasn't wrong; the old one ran a little hot. But the switch put a
+step change into thousands of station records at nearly the same time.</p>
+
+<p>Half a degree sounds small, and for an average it is. A threshold count is
+merciless to it. A day the old shelter recorded at 95.5&deg;F reads 94.6&deg;F
+on the new sensor, and simply vanishes from a count of 95&deg;F days, even
+though the air outside is identical:</p>
+
+<div id="mmts-fig"></div>
+
+<p>The observation-time shift and the instrument swap pushed the same way:
+both make recent hot days scarcer on paper relative to the past. The panel
+below replays both transitions on the whole USCRN network at once; set the
+observation times and the instrument bias, and watch what happens to a count
+of hot days in data where nothing real changed.</p>
 
 <div class="card">
   <h2>Replaying history on 70 pristine stations</h2>
@@ -238,6 +288,28 @@ function drawMech(H){
   }
 }
 
+/* ---------- MMTS marginal-day figure ---------- */
+function drawMMTS(){
+  const W=480, Ht=170, L=8, R=8;
+  const y = f => 30 + (97-f)/(97-93)*(Ht-55);
+  let s = `<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="The same afternoon reads 95.5 F in a Cotton Region Shelter and 94.6 F on an MMTS sensor, crossing below the 95 F threshold">`;
+  s += `<line x1="${L}" x2="${W-R}" y1="${y(95)}" y2="${y(95)}" stroke="${css('--heat')}" stroke-dasharray="5 4" stroke-width="1.4"/>`;
+  s += `<text x="${W-R}" y="${y(95)-6}" text-anchor="end" font-size="11" fill="${css('--heat')}">95&#176;F threshold</text>`;
+  const bar = (x, f, col, lab1, lab2, counted) => {
+    s += `<rect x="${x-34}" y="${y(f)}" width="68" height="${Ht-30-y(f)}" fill="${col}" opacity=".85"/>`;
+    s += `<text x="${x}" y="${y(f)-8}" text-anchor="middle" font-size="13" font-weight="700" fill="${css('--ink')}">${f.toFixed(1)}&#176;F</text>`;
+    s += `<text x="${x}" y="${Ht-16}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${lab1}</text>`;
+    s += `<text x="${x}" y="${Ht-4}" text-anchor="middle" font-size="10" fill="${counted?css('--heat'):css('--muted')}">${lab2}</text>`;
+  };
+  bar(140, 95.5, css('--heat'), "Cotton Region Shelter", "counted as a hot day", true);
+  bar(340, 94.6, css('--cool'), "MMTS sensor", "not counted", false);
+  s += `<path d="M 200 ${y(95.5)+6} L 292 ${y(94.6)+2}" stroke="${css('--muted')}" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>`;
+  s += `<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="${css('--muted')}"/></marker></defs>`;
+  s += `<text x="246" y="${(y(95.5)+y(94.6))/2-6}" text-anchor="middle" font-size="10" fill="${css('--muted')}">&minus;0.9&#176;F</text>`;
+  s += `</svg>`;
+  document.getElementById("mmts-fig").innerHTML = s;
+}
+
 /* ---------- network panel ---------- */
 const YRS = MATRIX.years, NY = YRS.length;
 const M = MATRIX.matrix; // [y][H][k]
@@ -307,8 +379,8 @@ selE.addEventListener("input", drawNet);
 document.getElementById("mmts").addEventListener("input", drawNet);
 const oh = document.getElementById("obshour");
 oh.addEventListener("input", ()=>{ document.getElementById("obshour-val").textContent = HOURS[+oh.value]; drawMech(+oh.value); });
-drawMech(17); drawNet();
-new MutationObserver(()=>{ drawMech(+oh.value); drawNet(); })
+drawMech(17); drawNet(); drawMMTS();
+new MutationObserver(()=>{ drawMech(+oh.value); drawNet(); drawMMTS(); })
   .observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
 </script>
 
