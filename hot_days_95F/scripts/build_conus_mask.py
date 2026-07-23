@@ -4,7 +4,7 @@ import numpy as np
 import xarray as xr
 from matplotlib.path import Path
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 
 d = json.load(open(f"{BASE}/data/us-states.json"))
 EXCLUDE = {"Alaska", "Hawaii", "Puerto Rico"}

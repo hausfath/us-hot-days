@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 YEARS = list(range(2005, 2026))
 BIASES = [round(0.1 * k, 1) for k in range(11)]
 

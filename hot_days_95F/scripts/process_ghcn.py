@@ -11,7 +11,7 @@ import os
 import numpy as np
 import pandas as pd
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 T95, T100, T105 = 35.0, (100 - 32) * 5 / 9, (105 - 32) * 5 / 9
 
 files = sorted(glob.glob(f"{BASE}/data/ghcn/stations/*.csv.gz"))

@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import requests
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 
 st = pd.read_fwf(f"{BASE}/data/ushcn/ushcn-v2.5-stations.txt", header=None,
                  colspecs=[(0, 11), (12, 20), (21, 30), (31, 37), (38, 40), (41, 71)],

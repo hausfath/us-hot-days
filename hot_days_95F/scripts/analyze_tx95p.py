@@ -10,7 +10,7 @@ import pandas as pd
 import xarray as xr
 from matplotlib.path import Path as MplPath
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 DEC = list(range(1890, 2030, 10))
 
 # ---------- per-cell 95th percentile threshold, 1961-1990 ----------

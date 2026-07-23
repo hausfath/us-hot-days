@@ -10,7 +10,7 @@ import xarray as xr
 from matplotlib.path import Path as MplPath
 from matplotlib.patches import PathPatch
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 plt.rcParams.update({"font.size": 10, "axes.spines.top": False,
                      "axes.spines.right": False, "figure.dpi": 150})
 

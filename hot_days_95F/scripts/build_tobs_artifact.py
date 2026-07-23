@@ -1,7 +1,7 @@
 """Inject data JSONs into the TOBs artifact template -> tobs_artifact.html"""
 import json
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 
 tpl = open(f"{BASE}/scripts/tobs_artifact_template.html").read()
 matrix = json.dumps(json.load(open(f"{BASE}/results/uscrn_tobs_matrix2.json")),
@@ -15,7 +15,7 @@ print(f"wrote tobs_artifact.html ({len(out)/1024:.0f} KB)")
 
 # standalone copy for GitHub Pages (adds the wrapper the artifact host injects)
 import os
-os.makedirs(f"{BASE}/docs", exist_ok=True)
+os.makedirs(f"{BASE}/../docs", exist_ok=True)
 standalone = (
     "<!doctype html>\n<html lang=\"en\">\n"
     "<meta charset=\"utf-8\">\n"
@@ -25,6 +25,6 @@ standalone = (
     "<text y='.9em' font-size='90'>🌡️</text></svg>\">\n"
     + out + "\n</html>\n"
 )
-with open(f"{BASE}/docs/index.html", "w") as f:
+with open(f"{BASE}/../docs/index.html", "w") as f:
     f.write(standalone)
 print("wrote docs/index.html (standalone)")

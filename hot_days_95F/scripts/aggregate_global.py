@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 plt.rcParams.update({"font.size": 11, "axes.spines.top": False,
                      "axes.spines.right": False, "figure.dpi": 150})
 

@@ -10,7 +10,7 @@ from matplotlib.path import Path as MplPath
 from matplotlib.patches import PathPatch
 from scipy import stats
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 plt.rcParams.update({"font.size": 11, "axes.spines.top": False,
                      "axes.spines.right": False, "figure.dpi": 150})
 

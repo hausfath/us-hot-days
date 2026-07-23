@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 URL = "https://www.ncei.noaa.gov/pub/data/uscrn/products/hourly02/{y}/"
 T95 = 35.0
 CONUS = set("AL AZ AR CA CO CT DE FL GA ID IL IN IA KS KY LA ME MD MA MI MN MS "

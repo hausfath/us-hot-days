@@ -15,7 +15,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 VERSION = sorted(glob.glob(f"{BASE}/data/ushcn/ushcn.v2.5.5.*"))[-1]
 WIN = 48           # months each side
 GAP = 2            # months excluded around the transition

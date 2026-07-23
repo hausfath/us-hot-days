@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 
 d = pd.read_csv(f"{BASE}/results/uscrn_tobs_counts.csv")
 d = d[(d.year >= 2005) & (d.year <= 2025)]

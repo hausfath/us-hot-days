@@ -1,14 +1,16 @@
 # Pre-publication draft and third-party image
-blog_post_draft.md
-Martz figure.jpeg
+hot_days_95F/blog_post_draft.md
+hot_days_95F/Martz figure.jpeg
 
 # Large re-downloadable NOAA metadata (see scripts/download_ghcn.sh)
-data/ghcn/ghcnd-inventory.txt
-data/ghcn/ghcnd-stations.txt
+hot_days_95F/data/ghcn/ghcnd-inventory.txt
+hot_days_95F/data/ghcn/ghcnd-stations.txt
 
 # Raw station and gridded source files (deleted after processing; re-downloadable)
-data/ghcn/stations/
-data/berkeley/Complete_TMAX_Daily_LatLong1_*.nc
+hot_days_95F/data/ghcn/stations/
+hot_days_95F/data/berkeley/Complete_TMAX_Daily_LatLong1_*.nc
 
 .DS_Store
-data/ushcn/ushcn.v2.5.5.*/
+hot_days_95F/data/ushcn/ushcn.v2.5.5.*/
+p95_comparison/data/ghcn/stations/
+p95_comparison/data/era5/raw/

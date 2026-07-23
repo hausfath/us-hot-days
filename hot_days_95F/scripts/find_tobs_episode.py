@@ -11,7 +11,7 @@ import sys
 import pandas as pd
 import requests
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 URL = "https://www.ncei.noaa.gov/pub/data/uscrn/products/hourly02/{y}/CRNH0203-{y}-{s}.txt"
 T95 = 35.0
 

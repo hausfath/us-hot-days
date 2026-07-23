@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import xarray as xr
 
-BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
+BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/hot_days_95F"
 URL = ("https://berkeley-earth-temperature.s3.us-west-1.amazonaws.com/"
        "Global/Gridded/Complete_TMAX_Daily_LatLong1_{}.nc")
 
