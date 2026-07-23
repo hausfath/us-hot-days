@@ -18,13 +18,13 @@ import requests
 
 BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days"
 URL = "https://www.ncei.noaa.gov/pub/data/uscrn/products/hourly02/{y}/"
-BIASES = [0.0, 0.25, 0.5, 0.75, 1.0]
+BIASES = [round(0.1 * k, 1) for k in range(11)]
 CONUS = set("AL AZ AR CA CO CT DE FL GA ID IL IN IA KS KY LA ME MD MA MI MN MS "
             "MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA "
             "WA WV WI WY".split())
 
 year = int(sys.argv[1])
-out_csv = f"{BASE}/results/uscrn_tobs_counts2.csv"
+out_csv = f"{BASE}/results/uscrn_tobs_counts3.csv"
 
 listing = requests.get(URL.format(y=year), timeout=60).text
 files = sorted(set(re.findall(rf"CRNH0203-{year}-[^\"]*?\.txt", listing)))
