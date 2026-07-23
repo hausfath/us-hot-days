@@ -13,7 +13,8 @@ BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/p9
 plt.rcParams.update({"font.size": 11, "axes.spines.top": False,
                      "axes.spines.right": False, "figure.dpi": 150})
 
-stn = pd.read_csv(f"{BASE}/results/conus_p95_stations.csv").set_index("year")
+stn = pd.read_csv(f"{BASE}/results/conus_p95_stations_adw.csv").set_index("year")
+stn22 = pd.read_csv(f"{BASE}/results/conus_p95_stations.csv").set_index("year")
 be = pd.read_csv(f"{BASE}/results/be_tx95p_annual.csv").set_index("year")["CONUS"]
 try:
     era = pd.read_csv(f"{BASE}/results/conus_p95_era5.csv").set_index("year")["era5"]
@@ -22,8 +23,8 @@ except FileNotFoundError:
     print("NOTE: ERA5 series not available yet")
 
 series = {
-    "GHCN raw stations": stn.ghcn_raw,
-    "GHCN homogenized (USHCN breakpoints)": stn.ghcn_homog,
+    "GHCN raw stations": stn.ghcn_raw_adw,
+    "GHCN homogenized (USHCN breakpoints)": stn.ghcn_homog_adw,
     "Berkeley Earth": be.dropna(),
     "ERA5": era.dropna(),
 }
@@ -70,8 +71,8 @@ for name, s in series.items():
 ax.axhline(18.26, color="0.6", lw=0.8, ls=":")
 ax.set_ylabel("Days > local 95th percentile")
 ax.set_title("CONUS days above the local 95th percentile of daily TMax\n"
-             "(per-station/per-cell thresholds, 1961–1990 base; 11-yr means in bold)",
-             fontsize=12)
+             "(per-station/per-cell thresholds, 1961–1990 base; stations gridded by ADW,\n"
+             "full CONUS coverage; 11-yr means in bold)", fontsize=12)
 ax.legend(frameon=False, fontsize=9)
 ax.set_xlim(1894, 2026)
 
