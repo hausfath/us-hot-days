@@ -14,13 +14,7 @@ import cdsapi
 BASE = "/Users/hausfath/Desktop/Climate Science/The Climate Brink/US hot days/p95_comparison"
 y0, y1 = int(sys.argv[1]), int(sys.argv[2])
 
-c = cdsapi.Client(quiet=True)
-for year in range(y0, y1 + 1):
-    out = f"{BASE}/data/era5/raw/tmax_{year}.nc"
-    if os.path.exists(out) and os.path.getsize(out) > 1e6:
-        print(f"{year}: exists, skipping", flush=True)
-        continue
-    print(f"{year}: requesting...", flush=True)
+def _retrieve(c, year, out):
     c.retrieve(
         "derived-era5-single-levels-daily-statistics",
         {
@@ -36,5 +30,27 @@ for year in range(y0, y1 + 1):
         },
         out,
     )
+
+c = cdsapi.Client(quiet=True)
+for year in range(y0, y1 + 1):
+    out = f"{BASE}/data/era5/raw/tmax_{year}.nc"
+    if os.path.exists(out) and os.path.getsize(out) > 1e6:
+        print(f"{year}: exists, skipping", flush=True)
+        continue
+    print(f"{year}: requesting...", flush=True)
+    ok = False
+    for attempt in range(10):
+        try:
+            _retrieve(c, year, out)
+            ok = True
+            break
+        except Exception as e:
+            wait = min(120 * (attempt + 1), 900)
+            print(f"{year}: attempt {attempt+1} failed ({str(e)[:80]}); "
+                  f"retrying in {wait}s", flush=True)
+            import time; time.sleep(wait)
+    if not ok:
+        print(f"{year}: GIVING UP", flush=True)
+        continue
     print(f"{year}: saved {os.path.getsize(out)/1e6:.0f} MB", flush=True)
 print("ERA5 DONE", flush=True)
