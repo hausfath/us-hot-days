@@ -11,3 +11,4 @@ data/ghcn/stations/
 data/berkeley/Complete_TMAX_Daily_LatLong1_*.nc
 
 .DS_Store
+data/ushcn/ushcn.v2.5.5.*/

@@ -4,11 +4,18 @@ Code and data behind the Climate Brink post **"Hot days and cold biases"**,
 which evaluates a viral chart of US days at or above 95°F/100°F/105°F built
 from raw GHCN-Daily station data.
 
-**Interactive demo:** [Two ways to erase a hot day](https://hausfath.github.io/us-hot-days/)
-replays the historical observation-time (TOBs) and MMTS instrument transitions
-on pristine USCRN hourly data, showing how paperwork alone can flip a warming
-hot-days record (+1.13 days/decade) into an apparently cooling one
-(−0.84 days/decade).
+**Interactive demos:**
+
+- [Two ways to erase a hot day](https://hausfath.github.io/us-hot-days/)
+  replays the historical observation-time (TOBs) and MMTS instrument
+  transitions on pristine USCRN hourly data, showing how paperwork alone can
+  flip a warming hot-days record (+1.13 days/decade) into an apparently
+  cooling one (−0.84 days/decade).
+- [The thermometer swap, measured](https://hausfath.github.io/us-hot-days/mmts/)
+  measures the MMTS transition bias directly from 385 USHCN stations with
+  HOMR-documented installation dates, differenced against unchanged neighbors:
+  TMax −0.34 ± 0.06 °C, TMin +0.26 ± 0.08 °C (matching Quayle et al 1991),
+  with a composite epoch analysis and a per-station pair explorer.
 
 ## Key results (days ≥95°F per year)
 
@@ -80,6 +87,23 @@ The derived CSV/JSON files in `results/` are committed, so steps 2–4 (and any
 re-analysis of the observation-hour × bias matrix) can be run without
 re-downloading anything.
 
+The MMTS deep dive has its own pipeline:
+
+1. `scripts/fetch_homr_metadata.py` — pulls TEMP equipment histories for all
+   1,218 USHCN stations from NOAA HOMR → `results/ushcn_equipment.csv`.
+2. `scripts/analyze_mmts_pairs.py [tob|raw]` — identifies documented
+   liquid-in-glass→MMTS transitions (1982–2005), pairs each with USHCN
+   neighbors ≤75 km having no documented equipment change within ±4 years,
+   and measures the step in the monthly anomaly difference at the documented
+   date (USHCN v2.5 monthly, TOB-adjusted by default) →
+   `results/mmts_pairs.json` (and `_raw` variant).
+3. `scripts/build_mmts_artifact.py` — builds `mmts_artifact.html` and the
+   hosted copy `docs/mmts/index.html`.
+
+USHCN v2.5 monthly tarballs (~20 MB total) download from
+`ncei.noaa.gov/pub/data/ushcn/v2.5/`; the derived equipment and pair files are
+committed, so steps 2–3 rerun without any downloads.
+
 ## Data sources
 
 - [NOAA GHCN-Daily](https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily)
@@ -88,6 +112,7 @@ re-downloading anything.
   (CC BY 4.0; Rohde et al)
 - [NOAA nClimDiv via Climate at a Glance](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/)
 - [NOAA USCRN hourly](https://www.ncei.noaa.gov/pub/data/uscrn/products/hourly02/) (US Climate Reference Network; public domain)
+- [NOAA USHCN v2.5 monthly](https://www.ncei.noaa.gov/pub/data/ushcn/v2.5/) and [NOAA HOMR station metadata](https://www.ncei.noaa.gov/access/homr/) (public domain)
 - US state boundaries GeoJSON from PublicaMundi/MappingAPI
 
 ## License

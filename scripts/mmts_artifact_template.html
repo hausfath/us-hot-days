@@ -1,0 +1,342 @@
+<title>The thermometer swap, measured: MMTS transition bias in 385 documented station changes</title>
+<style>
+:root{
+  --paper:#f7f7f5; --card:#ffffff; --ink:#22252a; --muted:#6b6f76;
+  --grid:#e4e4e0; --border:#d8d8d3; --heat:#c8432c; --heat-soft:#c8432c22;
+  --cool:#4472a8; --cool-soft:#4472a822; --ok:#3d7a4e;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#1d2024; --card:#24282d; --ink:#e8e6e1; --muted:#9a9ea6;
+    --grid:#34383e; --border:#3a3f45; --heat:#e0664f; --heat-soft:#e0664f26;
+    --cool:#7aa3d4; --cool-soft:#7aa3d426; --ok:#6fae80; }
+}
+:root[data-theme="dark"]{ --paper:#1d2024; --card:#24282d; --ink:#e8e6e1;
+  --muted:#9a9ea6; --grid:#34383e; --border:#3a3f45; --heat:#e0664f;
+  --heat-soft:#e0664f26; --cool:#7aa3d4; --cool-soft:#7aa3d426; --ok:#6fae80; }
+:root[data-theme="light"]{ --paper:#f7f7f5; --card:#ffffff; --ink:#22252a;
+  --muted:#6b6f76; --grid:#e4e4e0; --border:#d8d8d3; --heat:#c8432c;
+  --heat-soft:#c8432c22; --cool:#4472a8; --cool-soft:#4472a822; --ok:#3d7a4e; }
+
+body{ background:var(--paper); color:var(--ink); font-family:var(--serif);
+  margin:0; line-height:1.6; }
+.wrap{ max-width:880px; margin:0 auto; padding:2.2rem 1.2rem 3rem; }
+header{ margin-bottom:1.6rem; }
+.eyebrow{ font-family:var(--sans); font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--heat); font-weight:600; }
+h1{ font-size:clamp(1.7rem,4.5vw,2.5rem); line-height:1.12; margin:.35rem 0 .6rem;
+  text-wrap:balance; font-weight:700; }
+.dek{ font-size:1.08rem; color:var(--muted); margin:0; }
+h2.prob{ font-size:1.35rem; margin:2.2rem 0 .4rem; }
+.card{ background:var(--card); border:1px solid var(--border); border-radius:4px;
+  padding:1.1rem 1.2rem 1.3rem; margin:1.6rem 0; }
+.card h2{ font-size:1.18rem; margin:.1rem 0 .15rem; }
+.card .sub{ font-family:var(--sans); font-size:.8rem; color:var(--muted); margin:0 0 .8rem; }
+.controls{ display:flex; flex-wrap:wrap; gap:.9rem 1.4rem; align-items:center;
+  font-family:var(--sans); font-size:.82rem; margin:.6rem 0 .8rem; }
+.controls label{ display:flex; align-items:center; gap:.45rem; }
+select{ font:inherit; font-size:.85rem; background:var(--card); color:var(--ink);
+  border:1px solid var(--border); border-radius:3px; padding:.15rem .3rem; max-width:340px; }
+button{ font-family:var(--sans); font-size:.8rem; background:var(--card);
+  color:var(--ink); border:1px solid var(--border); border-radius:3px;
+  padding:.25rem .7rem; cursor:pointer; }
+button:hover{ border-color:var(--heat); }
+button:focus-visible, select:focus-visible, input:focus-visible{
+  outline:2px solid var(--heat); outline-offset:1px; }
+svg{ display:block; width:100%; height:auto; }
+svg text{ font-family:var(--sans); }
+.chips{ display:flex; flex-wrap:wrap; gap:.5rem; font-family:var(--sans);
+  font-size:.8rem; margin-top:.7rem; }
+.chip{ border:1px solid var(--border); border-radius:3px; padding:.35rem .6rem;
+  font-variant-numeric:tabular-nums; }
+.chip b{ font-size:.95rem; }
+.chip.hot{ border-color:var(--heat); background:var(--heat-soft); }
+.chip.cool{ border-color:var(--cool); background:var(--cool-soft); }
+.fn{ font-family:var(--sans); font-size:.78rem; color:var(--muted); }
+.fn a{ color:inherit; }
+a{ color:var(--cool); }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">The Climate Brink · Data deep dive</div>
+  <h1>The thermometer swap, measured</h1>
+  <p class="dek">Starting in the mid-1980s, thousands of US weather stations
+  traded their liquid-in-glass thermometers for electronic sensors, and 385 of
+  them wrote down the date. Compare each one against its unchanged neighbors,
+  and the size of the bias falls straight out of the data.</p>
+</header>
+
+<p>In the companion piece to this page
+(<a href="https://hausfath.github.io/us-hot-days/">Two ways to erase a hot
+day</a>) we <em>simulated</em> the effect of the 1980s instrument transition
+on hot-day counts. Here we measure the real thing. NOAA's
+<a href="https://www.ncei.noaa.gov/access/homr/">station metadata archive</a>
+records the equipment history of the volunteer network, including the date
+each station's Cotton Region Shelter and liquid-in-glass thermometers gave way
+to the electronic Maximum&ndash;Minimum Temperature System (MMTS). Among the
+1,218 long-record stations of the US Historical Climatology Network (USHCN),
+385 have a cleanly documented liquid-in-glass&#8594;MMTS transition between
+1982 and 2005, most of them clustered in 1984&ndash;1986.</p>
+
+<p>The measurement trick is the oldest one in climatology: <b>neighbors share
+weather</b>. Two stations 30 miles apart experience nearly the same monthly
+temperature swings, so if you subtract one station's monthly anomalies from
+the other's, the climate cancels out and what remains is the difference
+between the <em>stations</em>: their instruments, their siting, their local
+quirks. If that difference series is flat for years, then jumps exactly when
+the paperwork says a new thermometer arrived, the jump is the instrument's
+fingerprint. So for each documented transition we paired the station with
+every USHCN neighbor within 75&#8202;km that had <em>no</em> documented
+equipment change within &plusmn;4 years, and averaged the before-vs-after
+jump<a href="#m" style="text-decoration:none">*</a>.</p>
+
+<h2 class="prob">The average of 385 documented transitions</h2>
+
+<p>Here is the average difference series across every pair, aligned so that
+month zero is each station's documented swap date. Daily highs (TMax) and
+daily lows (TMin) are shown separately.</p>
+
+<div class="card">
+  <h2>Neighbors diverge on the documented date</h2>
+  <p class="sub">Mean difference in monthly anomalies (transitioning station minus unchanged
+  neighbors), aligned on each station's documented MMTS installation month &middot;
+  703 pairs, 385 transitions &middot; USHCN monthly data, TOB-adjusted</p>
+  <div id="comp-chart"></div>
+  <div class="chips">
+    <div class="chip hot">Daily highs: <b>__MEAN_TMAX__&deg;C</b> (&plusmn;__CI_TMAX__)</div>
+    <div class="chip cool">Daily lows: <b>+__MEAN_TMIN__&deg;C</b> (&plusmn;__CI_TMIN__)</div>
+    <div class="chip">Quayle et al (1991) found &minus;0.4 / +0.3</div>
+  </div>
+</div>
+
+<p>Two things are worth staring at. First, the series are flat for four years
+before the swap: these station pairs were measuring the same climate, stably.
+Second, the two panels move in <b>opposite directions</b>. The new electronic
+sensor reads daytime highs cooler (its shield does not soak up sunshine the
+way a wooden box does) and nighttime lows slightly warmer. An instrument
+artifact does that; a change in the actual climate does not. It is also the
+opposite of what you would expect if, as is sometimes alleged, adjustments for
+these changes existed to manufacture warming: correcting the highs
+<em>warms</em> recent decades, but correcting the lows <em>cools</em> them.</p>
+
+<h2 class="prob">Every station tells the story a little differently</h2>
+
+<p>The average hides real spread: shield differences interact with local sun,
+wind, and siting, and sometimes the MMTS was installed closer to the house
+than the old shelter (the cable had to reach the indoor display). Here is the
+distribution of the measured step at all 385 stations.</p>
+
+<div class="card">
+  <h2>Distribution of measured steps</h2>
+  <p class="sub">One value per transitioning station (averaged over its reference pairs) &middot;
+  bin width 0.1&deg;C</p>
+  <div id="hist-chart"></div>
+</div>
+
+<p>The typical station's highs dropped by around a third of a degree C, but
+individual stations range from near zero to beyond a full degree, in both
+variables. This is why modern homogenization
+(<a href="https://journals.ametsoc.org/view/journals/clim/22/7/2008jcli2263.1.xml">Menne
+and Williams 2009</a>) doesn't apply one blanket correction: it compares every
+station against its neighbors, exactly as done here, and corrects each
+detected break by its own locally measured size.</p>
+
+<h2 class="prob">Browse the transitions yourself</h2>
+
+<p>Every documented transition, with its best-matched unchanged neighbor.
+The dashed lines are the average difference before and after the documented
+date; their gap is the measured step.</p>
+
+<div class="card">
+  <h2>Pair explorer</h2>
+  <p class="sub">Monthly anomaly difference (transitioning station minus neighbor), &plusmn;48 months
+  around the documented installation date</p>
+  <div class="controls">
+    <label>Station <select id="pair-sel"></select></label>
+    <button id="prev">&#8592; prev</button>
+    <button id="next">next &#8594;</button>
+    <label><input type="radio" name="pvar" value="tmax" checked> TMax</label>
+    <label><input type="radio" name="pvar" value="tmin"> TMin</label>
+  </div>
+  <div id="pair-chart"></div>
+  <div class="chips" id="pair-chips"></div>
+</div>
+
+<h2 class="prob">Why half a degree matters</h2>
+
+<p>Spread across thousands of stations in under a decade, a &minus;0.34&deg;C
+step in daily highs is enough to erase roughly one in seven days at or above
+95&deg;F from the raw record (see the
+<a href="https://hausfath.github.io/us-hot-days/">companion demonstration</a>,
+where this bias, replayed on pristine modern data, flips a warming hot-day
+trend to an apparently cooling one). It also explains a chunk of why raw and
+homogenized US temperature records diverge starting in the 1980s: the raw
+record contains a nationwide, one-way, non-climatic step. The swap was worth
+making; the new sensors are better. But you cannot splice two different
+instruments together, call the result raw truth, and read a climate trend off
+the seam.</p>
+
+<p class="fn" id="m"><b>*Method.</b> Station equipment histories from NOAA
+HOMR (TEMP element records; transition = first period whose equipment is MMTS,
+preceded by non-MMTS equipment, 1982&ndash;2005). Temperatures are USHCN v2.5
+monthly TMax/TMin with time-of-observation adjustment only (no homogenization),
+so observation-time changes cannot masquerade as instrument steps; monthly
+anomalies are relative to each station's own 1961&ndash;1990 means. Reference
+stations: USHCN neighbors within 75&#8202;km with no documented TEMP equipment
+change within the &plusmn;48-month window; the two months around the
+documented date are excluded from the step fit, and each side must have at
+least 30 valid months. Steps are averaged per transitioning station before
+computing the mean and its 95% confidence interval. Using fully raw
+(non-TOB-adjusted) data instead gives &minus;0.39&deg;C / +0.20&deg;C.
+Code and data:
+<a href="https://github.com/hausfath/us-hot-days">github.com/hausfath/us-hot-days</a>.</p>
+</div>
+
+<script>
+const D = __MMTS_JSON__;
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const WIN = D.win, GAP = D.gap, N = 2*WIN+1;
+
+function linePath(vals, x, y){
+  let p = "", pen = false;
+  vals.forEach((v,i)=>{
+    if(v===null){ pen=false; return; }
+    p += (pen?"L":"M") + x(i).toFixed(1) + " " + y(v).toFixed(1) + " ";
+    pen = true;
+  });
+  return p;
+}
+
+/* ---------- composite ---------- */
+function drawComp(){
+  const W=840, Ht=340, L=46, R=10, T=16, B=30;
+  const x = i => L + i/(N-1)*(W-L-R);
+  const lo=-0.55, hi=0.45;
+  const y = v => T + (hi-v)/(hi-lo)*(Ht-T-B);
+  let s = `<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Composite difference series stepping down for TMax and up for TMin at month zero">`;
+  for(let v=-0.5; v<=0.4001; v+=0.1){
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="${css(v.toFixed(2)==='0.00'?'--muted':'--grid')}" stroke-width="${Math.abs(v)<0.001?1.2:1}"/>`;
+    s += `<text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="${css('--muted')}">${v>0?'+':''}${v.toFixed(1)}</text>`;
+  }
+  for(let m=-48; m<=48; m+=12){
+    const xx = x(m+WIN);
+    s += `<text x="${xx}" y="${Ht-8}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${m>0?'+':''}${m}</text>`;
+  }
+  s += `<text x="${(L+W-R)/2}" y="${Ht-8+0}" dy="12" text-anchor="middle" font-size="10" fill="${css('--muted')}"></text>`;
+  s += `<line x1="${x(WIN)}" x2="${x(WIN)}" y1="${T}" y2="${Ht-B}" stroke="${css('--ink')}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+  s += `<text x="${x(WIN)+5}" y="${T+12}" font-size="11" fill="${css('--ink')}">documented MMTS installation</text>`;
+  s += `<path d="${linePath(D.composite.tmax, x, y)}" fill="none" stroke="${css('--heat')}" stroke-width="2.2"/>`;
+  s += `<path d="${linePath(D.composite.tmin, x, y)}" fill="none" stroke="${css('--cool')}" stroke-width="2.2"/>`;
+  const lx = i => D.composite.tmax[i];
+  s += `<text x="${x(N-2)}" y="${y(D.composite.tmax[N-2])+16}" text-anchor="end" font-size="12" font-weight="700" fill="${css('--heat')}">daily highs</text>`;
+  s += `<text x="${x(N-2)}" y="${y(D.composite.tmin[N-2])-10}" text-anchor="end" font-size="12" font-weight="700" fill="${css('--cool')}">daily lows</text>`;
+  s += `<text x="${L+4}" y="${Ht-B-6}" font-size="10" fill="${css('--muted')}">months relative to documented swap &#8594;</text>`;
+  s += `<text x="${L+4}" y="${T+12}" font-size="10" fill="${css('--muted')}">&deg;C vs unchanged neighbors</text>`;
+  s += `</svg>`;
+  document.getElementById("comp-chart").innerHTML = s;
+}
+
+/* ---------- histogram ---------- */
+function drawHist(){
+  const W=840, Ht=280, L=46, R=10, T=14, B=42;
+  const bmin=-1.25, bmax=1.25, bw=0.1;
+  const nb = Math.round((bmax-bmin)/bw);
+  const binify = arr => {
+    const bins = new Array(nb).fill(0);
+    arr.forEach(v=>{ const b = Math.floor((Math.min(Math.max(v,bmin),bmax-1e-9)-bmin)/bw); bins[b]++; });
+    return bins;
+  };
+  const hx = binify(D.percand_tmax), hn = binify(D.percand_tmin);
+  const ymax = Math.max(...hx, ...hn)*1.1;
+  const x = v => L + (v-bmin)/(bmax-bmin)*(W-L-R);
+  const y = c => T + (1-c/ymax)*(Ht-T-B);
+  let s = `<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Histogram of per-station steps: daily highs centred near minus 0.34, daily lows near plus 0.26">`;
+  for(let c=0; c<=ymax; c+=20){
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(c)}" y2="${y(c)}" stroke="${css('--grid')}"/>`;
+    s += `<text x="${L-6}" y="${y(c)+4}" text-anchor="end" font-size="11" fill="${css('--muted')}">${c}</text>`;
+  }
+  for(let v=-1; v<=1.001; v+=0.5){
+    s += `<text x="${x(v)}" y="${Ht-24}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${v>0?'+':''}${v.toFixed(1)}</text>`;
+  }
+  s += `<text x="${(L+W-R)/2}" y="${Ht-6}" text-anchor="middle" font-size="11" fill="${css('--muted')}">measured step at documented transition (&deg;C)</text>`;
+  s += `<line x1="${x(0)}" x2="${x(0)}" y1="${T}" y2="${Ht-B}" stroke="${css('--muted')}" stroke-width="1"/>`;
+  const bar = (bins, col, off) => {
+    bins.forEach((c,b)=>{
+      if(!c) return;
+      const x0 = x(bmin + b*bw) + off, w = (x(bw)-x(0))/2 - 1.5;
+      s += `<rect x="${x0}" y="${y(c)}" width="${w}" height="${y(0)-y(c)}" fill="${col}" opacity=".8"/>`;
+    });
+  };
+  bar(hx, css('--heat'), 1);
+  bar(hn, css('--cool'), (x(bw)-x(0))/2 + 0.5);
+  s += `<line x1="${x(D.mean_tmax)}" x2="${x(D.mean_tmax)}" y1="${T}" y2="${Ht-B}" stroke="${css('--heat')}" stroke-dasharray="4 3" stroke-width="1.6"/>`;
+  s += `<line x1="${x(D.mean_tmin)}" x2="${x(D.mean_tmin)}" y1="${T}" y2="${Ht-B}" stroke="${css('--cool')}" stroke-dasharray="4 3" stroke-width="1.6"/>`;
+  s += `<text x="${x(D.mean_tmax)-5}" y="${T+12}" text-anchor="end" font-size="11" fill="${css('--heat')}">highs: ${D.mean_tmax.toFixed(2)}</text>`;
+  s += `<text x="${x(D.mean_tmin)+5}" y="${T+12}" font-size="11" fill="${css('--cool')}">lows: +${D.mean_tmin.toFixed(2)}</text>`;
+  s += `<text x="${W-R}" y="${T+12}" text-anchor="end" font-size="11" fill="${css('--muted')}">stations per bin</text>`;
+  s += `</svg>`;
+  document.getElementById("hist-chart").innerHTML = s;
+}
+
+/* ---------- pair explorer ---------- */
+const EX = D.explorer;
+let cur = 0;
+function stepFit(ser){
+  const pre=[], post=[];
+  ser.forEach((v,i)=>{
+    const off = i - WIN;
+    if(v===null || Math.abs(off) < GAP) return;
+    (off<0?pre:post).push(v);
+  });
+  const m = a => a.reduce((x,y)=>x+y,0)/a.length;
+  return {pre:m(pre), post:m(post)};
+}
+function drawPair(){
+  const p = EX[cur];
+  const v = document.querySelector('input[name="pvar"]:checked').value;
+  const ser = v==="tmax" ? p.series_tmax : p.series_tmin;
+  const {pre, post} = stepFit(ser);
+  const W=840, Ht=320, L=46, R=10, T=16, B=30;
+  const x = i => L + i/(N-1)*(W-L-R);
+  const vals = ser.filter(z=>z!==null);
+  const lo = Math.min(...vals, pre, post)-0.3, hi = Math.max(...vals, pre, post)+0.3;
+  const y = z => T + (hi-z)/(hi-lo)*(Ht-T-B);
+  let s = `<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Difference series for the selected station pair">`;
+  const g0 = Math.ceil(lo*2)/2;
+  for(let g=g0; g<=hi; g+=0.5){
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(g)}" y2="${y(g)}" stroke="${css('--grid')}"/>`;
+    s += `<text x="${L-6}" y="${y(g)+4}" text-anchor="end" font-size="11" fill="${css('--muted')}">${g>0?'+':''}${g.toFixed(1)}</text>`;
+  }
+  for(let m=-48; m<=48; m+=12){
+    s += `<text x="${x(m+WIN)}" y="${Ht-8}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${m>0?'+':''}${m}</text>`;
+  }
+  s += `<line x1="${x(WIN)}" x2="${x(WIN)}" y1="${T}" y2="${Ht-B}" stroke="${css('--ink')}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+  const col = v==="tmax" ? css('--heat') : css('--cool');
+  s += `<path d="${linePath(ser, x, y)}" fill="none" stroke="${col}" stroke-width="1.6" opacity=".85"/>`;
+  s += `<line x1="${x(0)}" x2="${x(WIN-GAP)}" y1="${y(pre)}" y2="${y(pre)}" stroke="${css('--ink')}" stroke-width="2" stroke-dasharray="6 4"/>`;
+  s += `<line x1="${x(WIN+GAP)}" x2="${x(N-1)}" y1="${y(post)}" y2="${y(post)}" stroke="${css('--ink')}" stroke-width="2" stroke-dasharray="6 4"/>`;
+  s += `<text x="${L+4}" y="${T+12}" font-size="10" fill="${css('--muted')}">&deg;C difference (station minus neighbor), monthly anomalies</text>`;
+  s += `</svg>`;
+  document.getElementById("pair-chart").innerHTML = s;
+  const step = v==="tmax" ? p.step_tmax : p.step_tmin;
+  document.getElementById("pair-chips").innerHTML =
+    `<div class="chip">Transition: <b>${p.cand_name}</b> on ${p.date}</div>` +
+    `<div class="chip">Neighbor: <b>${p.ref_name}</b> (${p.km} km away)</div>` +
+    `<div class="chip ${step<0?'hot':'cool'}">Measured step: <b>${step>0?'+':''}${step.toFixed(2)}&deg;C</b></div>`;
+}
+const sel = document.getElementById("pair-sel");
+EX.forEach((p,i)=>{ sel.add(new Option(`${p.cand_name} · ${p.date.slice(0,4)}`, i)); });
+sel.addEventListener("input", ()=>{ cur=+sel.value; drawPair(); });
+document.getElementById("prev").addEventListener("click", ()=>{ cur=(cur-1+EX.length)%EX.length; sel.value=cur; drawPair(); });
+document.getElementById("next").addEventListener("click", ()=>{ cur=(cur+1+EX.length)%EX.length; sel.value=cur; drawPair(); });
+document.querySelectorAll('input[name="pvar"]').forEach(r=>r.addEventListener("input", drawPair));
+// default: median TMax step among well-sampled pairs
+cur = Math.floor(EX.length/2); sel.value = cur;
+
+drawComp(); drawHist(); drawPair();
+new MutationObserver(()=>{ drawComp(); drawHist(); drawPair(); })
+  .observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
+</script>
