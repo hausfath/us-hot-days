@@ -51,6 +51,35 @@ Full methods, caveats, and sensitivity tests: [METHODS.md](METHODS.md).
 - `data/cag_*.csv` — NOAA Climate at a Glance CONUS annual TMax/TMin/TAvg.
 - `figures/` — all figures from the post.
 
+## Interactive demo pipeline
+
+The [hosted demo](https://hausfath.github.io/us-hot-days/) is fully
+reproducible from this repo:
+
+1. `scripts/process_uscrn_year2.py YEAR` — streams one year of USCRN hourly
+   TMAX (CONUS stations) and writes per-station annual counts of days ≥95°F
+   under each of 24 simulated observation hours × 5 instrument cold-bias
+   levels (0 to −1.0°C) to `results/uscrn_tobs_counts2.csv`. Run for
+   2005–2025 (~5 GB of downloads total; raw files are not stored).
+   (`process_uscrn_year.py` / `uscrn_tobs_counts.csv` are the earlier
+   obs-hour-only version, kept for reference.)
+2. `scripts/aggregate_uscrn_tobs2.py` — screens to a fixed set of 70 stations
+   (≥95% complete Apr–Oct hours in ≥20 of 21 years) and builds the
+   network-mean matrix `results/uscrn_tobs_matrix2.json`
+   ([year][obs hour][bias]), plus headline scenario trends.
+3. `scripts/find_tobs_episode.py STATION YEAR extract` — finds isolated
+   double-count episodes (a ≥95°F day preceded and followed by cool days that
+   a 5 PM observer books twice) and extracts the 72-hour hourly trace
+   (`results/tobs_episode.json`). The demo uses Manhattan 6 SSW, KS,
+   July 3–5, 2023.
+4. `scripts/build_tobs_artifact.py` — injects both JSONs into
+   `scripts/tobs_artifact_template.html`, producing `tobs_artifact.html` and
+   the GitHub Pages copy `docs/index.html`.
+
+The derived CSV/JSON files in `results/` are committed, so steps 2–4 (and any
+re-analysis of the observation-hour × bias matrix) can be run without
+re-downloading anything.
+
 ## Data sources
 
 - [NOAA GHCN-Daily](https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily)
@@ -58,6 +87,7 @@ Full methods, caveats, and sensitivity tests: [METHODS.md](METHODS.md).
 - [Berkeley Earth](https://berkeleyearth.org/data/) gridded daily TMAX
   (CC BY 4.0; Rohde et al)
 - [NOAA nClimDiv via Climate at a Glance](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/)
+- [NOAA USCRN hourly](https://www.ncei.noaa.gov/pub/data/uscrn/products/hourly02/) (US Climate Reference Network; public domain)
 - US state boundaries GeoJSON from PublicaMundi/MappingAPI
 
 ## License
