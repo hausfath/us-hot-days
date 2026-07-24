@@ -21,19 +21,28 @@ try:
 except FileNotFoundError:
     era = pd.Series(dtype=float)
     print("NOTE: ERA5 series not available yet")
+try:
+    jra = pd.read_csv(f"{BASE}/results/conus_p95_jra3q.csv").set_index("year")["jra3q"]
+except FileNotFoundError:
+    jra = pd.Series(dtype=float)
+    print("NOTE: JRA-3Q series not available yet")
 
 series = {
     "GHCN raw stations": stn.ghcn_raw_adw,
     "GHCN homogenized (USHCN breakpoints)": stn.ghcn_homog_adw,
     "Berkeley Earth": be.dropna(),
     "ERA5": era.dropna(),
+    "JRA-3Q": jra.dropna(),
 }
 COLS = {"GHCN raw stations": "#b2182b",
         "GHCN homogenized (USHCN breakpoints)": "#e08214",
         "Berkeley Earth": "#2166ac",
-        "ERA5": "#35978f"}
+        "ERA5": "#35978f",
+        "JRA-3Q": "#7a4a9e"}
 
 def trend(s, y0):
+    if len(s) == 0 or s.index.min() > y0 + 5:
+        return None          # series does not cover this window
     s = s.loc[y0:]
     if len(s) < 20:
         return None

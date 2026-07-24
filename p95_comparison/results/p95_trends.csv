@@ -2,4 +2,5 @@ series,trend_1895,ci_1895,trend_1930,ci_1930,trend_1960,ci_1960
 GHCN raw stations,-0.34,0.272,-0.813,0.443,0.747,0.609
 GHCN homogenized (USHCN breakpoints),0.185,0.284,0.095,0.479,1.968,0.645
 Berkeley Earth,0.692,0.288,0.342,0.488,1.941,0.765
-ERA5,,,,,,
+ERA5,,,,,2.286,0.651
+JRA-3Q,,,,,0.996,0.699

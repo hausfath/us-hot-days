@@ -14,3 +14,8 @@ hot_days_95F/data/berkeley/Complete_TMAX_Daily_LatLong1_*.nc
 hot_days_95F/data/ushcn/ushcn.v2.5.5.*/
 p95_comparison/data/ghcn/stations/
 p95_comparison/data/era5/raw/
+p95_comparison/data/jra3q/
+p95_comparison/data/era5/openmeteo/
+p95_comparison/data/ushcn/ushcn.v2.5.5.*/
+p95_comparison/data/ushcn/*.tar.gz
+p95_comparison/logs/
